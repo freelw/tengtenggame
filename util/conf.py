@@ -1,0 +1,41 @@
+#!/usr/bin/env python
+#coding=utf-8
+conf = {
+    'piclist':
+        [
+            {
+                'dir':'./pic/proxy.jpg',
+                'fx':10,
+                'tx':-900,
+                'fy':10,
+                'ty':-700,
+                'timelen':15
+            },
+            {
+                'dir':'./pic/1327574_Pcgames0108a06.jpg',
+                'fx':-100,
+                'tx':50,
+                'fy':100,
+                'ty':-100,
+                'timelen':6
+            },
+            {
+                'dir':'./pic/1375862552852182.jpg',
+                'fx':100,
+                'tx':-20,
+                'fy':100,
+                'ty':-100,
+                'timelen':6
+            },
+            {
+                'dir':'./pic/20111223224441197780s11036026031941_5.jpg',
+                'fx':-100,
+                'tx':100,
+                'fy':100,
+                'ty':-100,
+                'timelen':6
+            },
+        ],
+        'music':'ZW2_411.ogg',
+        'loop':-1
+}

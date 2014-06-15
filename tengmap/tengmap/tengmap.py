@@ -27,11 +27,11 @@ class tengmap:
         self.unit_list = self.loadUnits(self.info['unit_list'])
         self.width = self.info['width']
         self.height = self.info['height']
-        self.camera_x = self.info['camera_x']
-        self.camera_y = self.info['camera_y']
-        self.camera_width = self.info['camera_width']
-        self.camera_height = self.info['camera_height']
-        self.hero = tenghero.tengHero(self.info['hero'])
+        #self.camera_x = self.info['camera_x']
+        #self.camera_y = self.info['camera_y']
+        #self.camera_width = self.info['camera_width']
+        #self.camera_height = self.info['camera_height']
+        #self.hero = tenghero.tengHero(self.info['hero'])
 
     def loadImgs(self, r_dir_list):
         imgs = {}

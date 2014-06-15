@@ -23,6 +23,7 @@ class tengHero:
 
         self.vector = [{'x':0, 'y':1}, {'x':-1, 'y':0}, {'x':1, 'y':0}, {'x':0, 'y':-1}]
         self.kposy = {K_DOWN:0, K_LEFT:1, K_RIGHT:2, K_UP:3}
+        self.clock = pygame.time.Clock()
 
     def blit(self, surface):
         tx = self.state * self.width
@@ -44,6 +45,7 @@ class tengHero:
                 self.change_state_y = self.y
                 self.state += 1
                 self.state %= 4
+            self.clock.tick(120)#fps 120
 
     def run_and_blit(self, surface):
         self.run()

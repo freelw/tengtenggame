@@ -17,23 +17,35 @@ class mapviewer:
         self.kposy = {K_DOWN:0, K_LEFT:1, K_RIGHT:2, K_UP:3}
         self.img_width = self.img.get_width()
         self.img_height = self.img.get_height()
+        self.clock = pygame.time.Clock()
 
-    def run(self):
-        screen = pygame.display.set_mode((640, 480), 0, 32)
+    def run(self, screen):
+        white = pygame.Color(0, 128, 255, 0)
         while True:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     exit() 
                 
-                if event.type = KEYDOWN:
-                    for key in self.kposy.keys()
-                        if evnet.key == key:
+                if event.type == KEYDOWN:
+                    for key in self.kposy.keys():
+                        if event.key == key:
                             ind = self.kposy[key]
-                            if self.x + self.width < self.img_width:
-                                self.x += self.width * self.vector[ind]
-                            if self.y + self.heght <  self.img_height:
-                                self.y += self.heght * self.vector[ind]
+                            
+                            
+                            tmp = self.x + self.width * self.vector[ind]['x']
+                            if tmp >= 0 and tmp < self.img_width:
+                                self.x = tmp
+                            tmp = self.y + self.height * self.vector[ind]['y']
+                            if tmp >= 0 and tmp < self.img_height:
+                                self.y = tmp
+                            
+            print '%d %d %d %d ' % (self.x, self.y, self.width, self.height)
+            pygame.draw.rect(screen, white, (0, 0, 640, 640))
+            screen.blit(self.img, (0, 0), (self.x, self.y, self.width, self.height))
+            pygame.display.update()
+            self.clock.tick(10)
         
 if '__main__' == __name__:
-    screen = pygame.display.set_mode((640, 480), 0, 32)
-    m = mapviewer('./pic/
+    screen = pygame.display.set_mode((200, 200), 0, 32)
+    m = mapviewer('./pic/map.png')
+    m.run(screen)

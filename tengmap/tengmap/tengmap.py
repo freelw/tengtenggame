@@ -10,12 +10,10 @@ import tenghero
 import copy
 
 class mapunit:
-    def __init__(self, img_dir, indx, indy, mapx, mapy, width=32, height=32):
+    def __init__(self, img_dir, indx, indy, width=32, height=32):
         self.img_dir = img_dir
         self.indx = indx
         self.indy = indy
-        self.mapx = mapx
-        self.mapy = mapy
         self.width = width
         self.height = height
 
@@ -46,25 +44,24 @@ class tengmap:
         self.imgs = self.loadImgs(self.r_dir_list)
         self.info = self.loadInfo(self.info_dir)
 
-        print self.info
-        self.default_unit = mapunit(**self.info['default_unit'])
         self.unit_list = self.loadUnits(self.info['unit_list'])
-        self.default_unit.setimg(self.imgs[self.default_unit.img_dir])
         for unit in self.unit_list:
             unit.setimg(self.imgs[unit.img_dir])
 
         self.width_cnt = self.info['width_cnt']
         self.height_cnt = self.info['height_cnt']
 
-        self._map =[[copy.copy(self.default_unit) for i in xrange(self.height_cnt)] for j in xrange(self.width_cnt)]
+        maparr = self.info['maparr']
+
+        self._map =[[None for i in xrange(self.height_cnt)] for j in xrange(self.width_cnt)]
         for i in xrange(self.width_cnt):
             for j in xrange(self.height_cnt):
-                print 'i : %d j : %d' % (i, j)
+                self._map[i][j] = copy.copy(self.unit_list[maparr[i][j]])
                 self._map[i][j].mapx = i
                 self._map[i][j].mapy = j
 
-        for unit in self.unit_list:
-            self._map[unit.mapx][unit.mapy] = copy.copy(unit)
+        #for unit in self.unit_list:
+        #    self._map[unit.mapx][unit.mapy] = copy.copy(unit)
 
     def loadImgs(self, r_dir_list):
         imgs = {}
@@ -80,7 +77,6 @@ class tengmap:
             for line in f:
                 content += line
             f.close()
-            print content
             return json.loads(content)
         except Exception, e:
             print 'loadInfo error %s' % e

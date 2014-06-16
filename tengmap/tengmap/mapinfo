@@ -1,6 +1,16 @@
 {
     "default_unit":{"img_dir":"./pic/map.png", "indx":1, "indy":1, "mapx":0, "mapy":0},
-    "unit_list":[],
-    "width_cnt":100,
-    "height_cnt":100
+        "unit_list":[
+                {"img_dir":"./pic/map.png", "indx":2, "indy":2},
+                {"img_dir":"./pic/map.png", "indx":3, "indy":2}
+            ],
+    "width_cnt":5,
+    "height_cnt":5,
+    "maparr":[
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0]
+    ]
 }

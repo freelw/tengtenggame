@@ -1,6 +1,6 @@
 {
-    'default_unit':{'./pic/map.png', indx:1, indy:1, mapx:0, mapy:0},
-    'unit_list':[],
-    'width_cnt':100,
-    'height_cnt':100
+    "default_unit":{"img_dir":"./pic/map.png", "indx":1, "indy":1, "mapx":0, "mapy":0},
+    "unit_list":[],
+    "width_cnt":100,
+    "height_cnt":100
 }

@@ -25,9 +25,9 @@ class tengHero:
         self.kposy = {K_DOWN:0, K_LEFT:1, K_RIGHT:2, K_UP:3}
         self.clock = pygame.time.Clock()
 
-    def blit(self, surface):
-        tx = self.state * self.width
-        ty = self.direction * self.height
+    def blit(self, surface, delta_x, delta_y):
+        tx = self.state * self.width - delta_x
+        ty = self.direction * self.height - delta_y
         #print self.x, ' ', self.y, ' ', tx, ' ', ty, ' ', self.width, ' ', self.height
         surface.blit(self.img, (self.x, self.y), (tx, ty, self.width, self.height))
     def dis(self, x0, y0, x1, y1):
@@ -47,9 +47,9 @@ class tengHero:
                 self.state += 1
                 self.state %= 4
 
-    def run_and_blit(self, surface):
+    def run_and_blit(self, surface, delta_x = 0, delta_y = 0):
         self.run()
-        self.blit(surface)
+        self.blit(surface, delta_x, delta_y)
 
     def event_callback(self, event):
         if event.type == KEYDOWN:

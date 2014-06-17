@@ -39,7 +39,7 @@ class mapviewer:
                             if tmp >= 0 and tmp < self.img_height:
                                 self.y = tmp
                             
-            print '%d %d %d %d ' % (self.x, self.y, self.width, self.height)
+            print '%d %d %d %d ' % (self.x/self.width, self.y/self.height, self.width, self.height)
             pygame.draw.rect(screen, white, (0, 0, 640, 640))
             screen.blit(self.img, (0, 0), (self.x, self.y, self.width, self.height))
             pygame.display.update()

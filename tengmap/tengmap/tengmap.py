@@ -20,7 +20,7 @@ class mapunit:
     def setimg(self, img):
         self.img = img
 
-    def display(self, delta_x, delta_y, screen):
+    def display(self, screen, delta_x, delta_y):
         tx = self.mapx*self.width - delta_x
         ty = self.mapy*self.height - delta_y
         swidth = screen.get_width()
@@ -31,7 +31,7 @@ class mapunit:
                   {'x':tx+self.width,'y':ty+self.height}
                  ]
         for point in points:
-            if delta_x <= point['x'] <= delta_x+swidth and delta_y <= point['y'] <= delta_y+sheight:
+            if 0 <= point['x'] <= swidth and 0 <= point['y'] <= sheight:
                 break
         else:
             return
@@ -50,6 +50,8 @@ class tengmap:
 
         self.width_cnt = self.info['width_cnt']
         self.height_cnt = self.info['height_cnt']
+        self.width = self.width_cnt * 32
+        self.height = self.height_cnt * 32
 
         maparr = self.info['maparr']
 
@@ -88,10 +90,10 @@ class tengmap:
             unit_list.append(unit)
         return unit_list
 
-    def display(self, delta_x, delta_y, screen):
+    def display(self, screen, delta_x = 0, delta_y = 0):
         for arr in self._map:
             for unit in arr:
-                unit.display(delta_x, delta_y, screen)
+                unit.display(screen, delta_x, delta_y)
 
 if '__main__' == __name__:
     screen = pygame.display.set_mode((640, 480), 0, 32)
@@ -101,6 +103,6 @@ if '__main__' == __name__:
         for event in pygame.event.get():
             if event.type == QUIT:
                 exit()
-        tmap.display(0, 0, screen)
+        tmap.display(screen)
         pygame.display.update()
         clock.tick(1)#fps 120

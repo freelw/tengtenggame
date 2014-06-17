@@ -73,8 +73,8 @@ if '__main__' == __name__:
             if event.type == QUIT:
                 exit()
             tcm.event_callback(event)
-            tcm.fixbyhero()
         tcm.run()
+        tcm.fixbyhero()
         pygame.draw.rect(screen, black, (0, 0, 640, 480))
         tcm.display(screen)
         pygame.display.update()

@@ -26,10 +26,10 @@ class tengHero:
         self.clock = pygame.time.Clock()
 
     def blit(self, surface, delta_x, delta_y):
-        tx = self.state * self.width - delta_x
-        ty = self.direction * self.height - delta_y
+        tx = self.state * self.width
+        ty = self.direction * self.height
         #print self.x, ' ', self.y, ' ', tx, ' ', ty, ' ', self.width, ' ', self.height
-        surface.blit(self.img, (self.x, self.y), (tx, ty, self.width, self.height))
+        surface.blit(self.img, (self.x - delta_x, self.y - delta_y), (tx, ty, self.width, self.height))
     def dis(self, x0, y0, x1, y1):
         lx = x1 - x0;
         ly = y1 - y0

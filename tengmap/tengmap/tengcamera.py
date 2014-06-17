@@ -7,6 +7,7 @@ pygame.init()
 
 import tengmap
 import tenghero
+from sys import exit
 class tengCamera:
     def __init__(self, x, y, width=640, height=480):
         self.x = x

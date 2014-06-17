@@ -24,16 +24,30 @@ class tengHero:
         self.vector = [{'x':0, 'y':1}, {'x':-1, 'y':0}, {'x':1, 'y':0}, {'x':0, 'y':-1}]
         self.kposy = {K_DOWN:0, K_LEFT:1, K_RIGHT:2, K_UP:3}
         self.clock = pygame.time.Clock()
+        self.boundx = 0
+        self.boundy = 0
+    def setbound(self, x, y):
+        self.boundx = x
+        self.boundy = y
+    
 
     def blit(self, surface, delta_x, delta_y):
         tx = self.state * self.width
         ty = self.direction * self.height
         #print self.x, ' ', self.y, ' ', tx, ' ', ty, ' ', self.width, ' ', self.height
         surface.blit(self.img, (self.x - delta_x, self.y - delta_y), (tx, ty, self.width, self.height))
+
     def dis(self, x0, y0, x1, y1):
         lx = x1 - x0;
         ly = y1 - y0
         return math.sqrt(lx ** 2 + ly ** 2)
+
+    def fix(self, x, y):
+        x = min(x, self.boundx - self.width)
+        y = min(y, self.boundy - self.height)
+        x = max(0, x)
+        y = max(0, y)
+        return x, y
 
     def run(self):
         vctitem = self.vector[self.direction]
@@ -41,6 +55,7 @@ class tengHero:
             passedtime = self.clock.tick() / 1000.
             self.x += vctitem['x'] * self.speed * passedtime
             self.y += vctitem['y'] * self.speed * passedtime
+            self.x, self.y = self.fix(self.x, self.y)
             if self.dis(self.change_state_x, self.change_state_y, self.x, self.y) > 10:
                 self.change_state_x = self.x
                 self.change_state_y = self.y
@@ -68,6 +83,7 @@ class tengHero:
 if '__main__' == __name__:
     screen = pygame.display.set_mode((640, 480), 0, 32)
     hero = tengHero('./pic/153.png')
+    hero.setbound(500, 500)
     black = pygame.Color(0, 0, 0, 0)
     clock = pygame.time.Clock()
     while True:

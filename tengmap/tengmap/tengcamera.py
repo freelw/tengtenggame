@@ -21,6 +21,7 @@ class tengCamera:
 
     def bindhero(self, hero):
         self.hero = hero
+        self.hero.setbound(self.tmap.width, self.tmap.height)
         
     def allow_left(self, x):
         return x > 0

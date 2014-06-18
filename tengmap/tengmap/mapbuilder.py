@@ -42,8 +42,27 @@ if '__main__' == __name__:
     if len(sys.argv) < 3:
         print 'argv error'
         exit()
-    mapw = int(sys.argv[1])
-    maph = int(sys.argv[2])
+    
+    if '-f' == sys.argv[1]:
+        fname = sys.argv[2]
+        f = open(fname)
+        content = ''
+        for line in f:
+            content += line
+        f.close()
+        tmp = json.loads(content)
+        mapw = tmp['width_cnt']
+        maph = tmp['height_cnt']
+        ulist = tmp['unit_list']
+        arr = tmp['maparr']
+        mapinfo = [[None for j in xrange(maph)] for i in xrange(mapw)]
+        for i in xrange(mapw):
+            for j in xrange(maph):
+                mapinfo[i][j] = {'indx':ulist[arr[i][j]]['indx'], 'indy':ulist[arr[i][j]]['indy']}
+    else:
+        mapw = int(sys.argv[1])
+        maph = int(sys.argv[2])
+        mapinfo = [[None for j in xrange(maph)] for i in xrange(mapw)]
     sw = 1500
     sh = 480
     screen = pygame.display.set_mode((sw, sh), 0, 32)
@@ -65,7 +84,7 @@ if '__main__' == __name__:
     indmy = 0
     delta_mx = 0
     delta_my = 0
-    mapinfo = [[None for j in xrange(maph)] for i in xrange(mapw)]
+    
     basex = 9 * width
     basey = 0
     while True:

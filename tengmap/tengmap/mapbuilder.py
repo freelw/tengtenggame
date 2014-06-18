@@ -4,9 +4,46 @@
 import pygame
 from pygame.locals import *
 pygame.init()
+import json
+import sys
 
+def saveinfo(info, width, height):
+    ulist = []
+    maparr = [[0 for j in xrange(height)] for i in xrange(width)]
+    
+    def getind(item, ulist):
+        cnt = 0
+        for u in ulist:
+            if u['indx'] == item['indx'] and u['indy'] == item['indy']:
+                return cnt
+            cnt += 1
+        tmp = {"img_dir":"./pic/map.png", "indx":item['indx'], "indy":item['indy']}
+        ulist.append(tmp)
+        return cnt
 
+    for i in xrange(width):
+        for j in xrange(height):
+            if info[i][j] is not None:
+                ind = getind(info[i][j], ulist)
+                maparr[i][j] = ind
+        
+    res = {"unit_list":ulist,
+    "width_cnt":width,
+    "height_cnt":height,
+    "maparr":maparr}
+    
+    res = json.dumps(res)
+    
+    f = open('./buildmapinfo', 'w')
+    f.write(res)
+    f.close()
+            
 if '__main__' == __name__:
+    if len(sys.argv) < 3:
+        print 'argv error'
+        exit()
+    mapw = int(sys.argv[1])
+    maph = int(sys.argv[2])
     sw = 1500
     sh = 480
     screen = pygame.display.set_mode((sw, sh), 0, 32)
@@ -22,9 +59,7 @@ if '__main__' == __name__:
     indx = 0
     indy = 0
     vector = [{'x':0, 'y':1}, {'x':-1, 'y':0}, {'x':1, 'y':0}, {'x':0, 'y':-1}]
-    kposy = {K_DOWN:0, K_LEFT:1, K_RIGHT:2, K_UP:3}
-    mapw = 20
-    maph = 50
+    kposy = {K_DOWN:0, K_LEFT:1, K_RIGHT:2, K_UP:3}    
     bleft = True
     indmx = 0
     indmy = 0
@@ -41,6 +76,8 @@ if '__main__' == __name__:
                 if K_TAB == event.key:
                     bleft = not bleft
                 if bleft:
+                    if K_RETURN == event.key:
+                        saveinfo(mapinfo, mapw, maph)
                     for key in kposy:
                         if key == event.key:
                             indx += vector[kposy[key]]['x']

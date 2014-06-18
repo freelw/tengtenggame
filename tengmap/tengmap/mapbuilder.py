@@ -56,14 +56,17 @@ if '__main__' == __name__:
         ulist = tmp['unit_list']
         arr = tmp['maparr']
         mapinfo = [[None for j in xrange(maph)] for i in xrange(mapw)]
+        mapinfo1 = [[None for j in xrange(maph)] for i in xrange(mapw)]
         for i in xrange(mapw):
             for j in xrange(maph):
                 mapinfo[i][j] = {'indx':ulist[arr[i][j]]['indx'], 'indy':ulist[arr[i][j]]['indy']}
+                mapinfo1[i][j] = {'indx':ulist[arr[i][j]]['indx_sec'], 'indy':ulist[arr[i][j]]['indy_sec']}
     else:
         mapw = int(sys.argv[1])
         maph = int(sys.argv[2])
         mapinfo = [[None for j in xrange(maph)] for i in xrange(mapw)]
-    sw = 1500
+        mapinfo1 = [[None for j in xrange(maph)] for i in xrange(mapw)]
+    sw = 1000
     sh = 480
     screen = pygame.display.set_mode((sw, sh), 0, 32)
     clock = pygame.time.Clock()
@@ -74,7 +77,8 @@ if '__main__' == __name__:
     delta_y = 0
     width = 32
     height = 32
-    img = pygame.image.load('./pic/map.png').convert()
+    #img = pygame.image.load('./pic/map.png').convert()
+    img = pygame.image.load('./pic/map.png').convert_alpha()
     indx = 0
     indy = 0
     vector = [{'x':0, 'y':1}, {'x':-1, 'y':0}, {'x':1, 'y':0}, {'x':0, 'y':-1}]

@@ -68,7 +68,7 @@ class tengmap:
     def loadImgs(self, r_dir_list):
         imgs = {}
         for dir in r_dir_list:
-            img = pygame.image.load(dir).convert()
+            img = pygame.image.load(dir).convert_alpha()
             imgs[dir] = img
         return imgs
 

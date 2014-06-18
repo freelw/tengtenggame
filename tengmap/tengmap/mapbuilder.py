@@ -132,6 +132,10 @@ if '__main__' == __name__:
                                 delta_my += 1
                             while delta_my * height > indmy * height:
                                 delta_my -= 1
+                            while delta_mx * width + sw - basex < indmx * width + width:
+                                delta_mx += 1
+                            while delta_mx * width > indmx * width:
+                                delta_mx -= 1
         pygame.draw.rect(screen, black, (0, 0, sw, sh))
         
         for j in xrange(maph):

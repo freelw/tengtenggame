@@ -7,9 +7,11 @@ pygame.init()
 import json
 import sys
 
-def saveinfo(info, width, height):
+def saveinfo(info, secinfo, width, height):
     ulist = []
+    useclist = []
     maparr = [[0 for j in xrange(height)] for i in xrange(width)]
+    mapsecarr = [[None for j in xrange(height)] for i in xrange(width)]
     
     def getind(item, ulist):
         cnt = 0
@@ -26,12 +28,21 @@ def saveinfo(info, width, height):
             if info[i][j] is not None:
                 ind = getind(info[i][j], ulist)
                 maparr[i][j] = ind
+            if secinfo[i][j] is not None:
+                ind = getind(secinfo[i][j], useclist)
+                mapsecarr[i][j] = ind
         
-    res = {"unit_list":ulist,
+    down = {"unit_list":ulist,
     "width_cnt":width,
     "height_cnt":height,
     "maparr":maparr}
     
+    up = {"unit_list":useclist,
+    "width_cnt":width,
+    "height_cnt":height,
+    "maparr":mapsecarr}
+    
+    res = {"down":down,"up":up}
     res = json.dumps(res)
     
     f = open('./buildmapinfo', 'w')
@@ -51,21 +62,32 @@ if '__main__' == __name__:
             content += line
         f.close()
         tmp = json.loads(content)
-        mapw = tmp['width_cnt']
-        maph = tmp['height_cnt']
-        ulist = tmp['unit_list']
-        arr = tmp['maparr']
+        down = tmp['down']
+        up = tmp['up']
+        mapw = down['width_cnt']
+        maph = down['height_cnt']
+        ulist = down['unit_list']
+        arr = down['maparr']
+        ulist_sec = up['unit_list']
+        arr_sec = up['maparr']
         mapinfo = [[None for j in xrange(maph)] for i in xrange(mapw)]
-        mapinfo1 = [[None for j in xrange(maph)] for i in xrange(mapw)]
+        mapsecinfo = [[None for j in xrange(maph)] for i in xrange(mapw)]
+        #mapinfo1 = [[None for j in xrange(maph)] for i in xrange(mapw)]
         for i in xrange(mapw):
             for j in xrange(maph):
                 mapinfo[i][j] = {'indx':ulist[arr[i][j]]['indx'], 'indy':ulist[arr[i][j]]['indy']}
-                mapinfo1[i][j] = {'indx':ulist[arr[i][j]]['indx_sec'], 'indy':ulist[arr[i][j]]['indy_sec']}
+        for i in xrange(mapw):
+            for j in xrange(maph):
+                if arr_sec[i][j] is None:
+                    mapsecinfo[i][j] = None
+                else:
+                    mapsecinfo[i][j] = {'indx':ulist_sec[arr_sec[i][j]]['indx'], 'indy':ulist_sec[arr_sec[i][j]]['indy']}
     else:
         mapw = int(sys.argv[1])
         maph = int(sys.argv[2])
         mapinfo = [[None for j in xrange(maph)] for i in xrange(mapw)]
-        mapinfo1 = [[None for j in xrange(maph)] for i in xrange(mapw)]
+        mapsecinfo = [[None for j in xrange(maph)] for i in xrange(mapw)]
+        #mapinfo1 = [[None for j in xrange(maph)] for i in xrange(mapw)]
     sw = 1000
     sh = 480
     screen = pygame.display.set_mode((sw, sh), 0, 32)
@@ -100,7 +122,7 @@ if '__main__' == __name__:
                     bleft = not bleft
                 if bleft:
                     if K_RETURN == event.key:
-                        saveinfo(mapinfo, mapw, maph)
+                        saveinfo(mapinfo, mapsecinfo, mapw, maph)
                     for key in kposy:
                         if key == event.key:
                             indx += vector[kposy[key]]['x']
@@ -119,7 +141,10 @@ if '__main__' == __name__:
                                 delta_y -= 1
                 else: # not bleft
                     if K_RETURN == event.key:
-                        mapinfo[indmx][indmy] = {'indx':indx, 'indy':indy}
+                        if KMOD_SHIFT & event.mod:
+                            mapsecinfo[indmx][indmy] = {'indx':indx, 'indy':indy}
+                        else:
+                            mapinfo[indmx][indmy] = {'indx':indx, 'indy':indy}
                     for key in kposy:
                         if key == event.key:
                             indmx += vector[kposy[key]]['x']
@@ -146,6 +171,10 @@ if '__main__' == __name__:
             for i in xrange(mapw):
                 if mapinfo[i][j] is not None:
                     screen.blit(img, (basex+i*width-delta_mx*width, basey+j*width-delta_my*height), (mapinfo[i][j]['indx']*width, mapinfo[i][j]['indy']*height, width, height))
+                if mapsecinfo[i][j] is not None:
+                    screen.blit(img, (basex+i*width-delta_mx*width, basey+j*width-delta_my*height), (mapsecinfo[i][j]['indx']*width, mapsecinfo[i][j]['indy']*height, width, height))
+                    #if mapinfo1[i][j]['indx'] is not None:
+                    #    screen.blit(img, (basex+i*width-delta_mx*width, basey+j*width-delta_my*height), (mapinfo1[i][j]['indx']*width, mapinfo1[i][j]['indy']*height, width, height))
         pygame.draw.rect(screen, blue if bleft else green, (basex + (indmx - delta_mx)*width, basey + (indmy - delta_my) * height, width, height), 2)
         screen.blit(img, (0, 0), (delta_x * width, delta_y * height, img.get_width(), img.get_height()))
         pygame.draw.rect(screen, blue if not bleft else green, ((indx - delta_x)*width, (indy - delta_y) * height, width, height), 2)

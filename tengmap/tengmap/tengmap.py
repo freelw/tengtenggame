@@ -36,6 +36,8 @@ class mapunit:
         else:
             return
         screen.blit(self.img, (tx, ty), (self.indx*self.width, self.indy*self.height, self.width, self.height))
+        #if self.indx_sec is not None:
+        #    screen.blit(self.img, (tx, ty), (self.indx_sec*self.width, self.indy_sec*self.height, self.width, self.height))
 
 class tengmap:
     def __init__(self, info_dir='./mapinfo', r_dir_list = ['./pic/map.png']):
@@ -43,24 +45,41 @@ class tengmap:
         self.r_dir_list = r_dir_list
         self.imgs = self.loadImgs(self.r_dir_list)
         self.info = self.loadInfo(self.info_dir)
+        down = self.info['down']
+        up = self.info['up']
 
-        self.unit_list = self.loadUnits(self.info['unit_list'])
+        self.unit_list = self.loadUnits(down['unit_list'])
         for unit in self.unit_list:
             unit.setimg(self.imgs[unit.img_dir])
-
-        self.width_cnt = self.info['width_cnt']
-        self.height_cnt = self.info['height_cnt']
+        maparr = down['maparr']
+        
+        
+        self.unit_sec_list = self.loadUnits(up['unit_list'])
+        for unit in self.unit_sec_list:
+            unit.setimg(self.imgs[unit.img_dir])
+        maparr_sec = up['maparr']
+        
+        self.width_cnt = down['width_cnt']
+        self.height_cnt = down['height_cnt']
         self.width = self.width_cnt * 32
         self.height = self.height_cnt * 32
 
-        maparr = self.info['maparr']
-
         self._map =[[None for i in xrange(self.height_cnt)] for j in xrange(self.width_cnt)]
+        self._map_sec =[[None for i in xrange(self.height_cnt)] for j in xrange(self.width_cnt)]
         for i in xrange(self.width_cnt):
             for j in xrange(self.height_cnt):
                 self._map[i][j] = copy.copy(self.unit_list[maparr[i][j]])
                 self._map[i][j].mapx = i
                 self._map[i][j].mapy = j
+                
+                if maparr_sec[i][j] is None:
+                    self._map_sec[i][j] = None
+                else:
+                    self._map_sec[i][j] = copy.copy(self.unit_sec_list[maparr_sec[i][j]])
+                    self._map_sec[i][j].mapx = i
+                    self._map_sec[i][j].mapy = j
+                
+                
 
         #for unit in self.unit_list:
         #    self._map[unit.mapx][unit.mapy] = copy.copy(unit)
@@ -94,6 +113,10 @@ class tengmap:
         for arr in self._map:
             for unit in arr:
                 unit.display(screen, delta_x, delta_y)
+        for arr in self._map_sec:
+            for unit in arr:
+                if unit is not None:
+                    unit.display(screen, delta_x, delta_y)
 
 if '__main__' == __name__:
     screen = pygame.display.set_mode((640, 480), 0, 32)

@@ -68,6 +68,10 @@ if '__main__' == __name__:
     tcm = tengCamera(0, 0)
     tcm.setmap(tmap)
     hero = tenghero.tengHero('./pic/153.png')
+    hero.x = 320-32
+    hero.y = 1248
+    tcm.x = 0
+    tcm.y = 1248+32-screen.get_height()
     tcm.bindhero(hero)
     black = pygame.Color(0, 0, 0, 0)
     while True:

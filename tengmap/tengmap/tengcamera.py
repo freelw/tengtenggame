@@ -70,6 +70,7 @@ if '__main__' == __name__:
     hero = tenghero.tengHero('./pic/153.png')
     hero.x = 320-32
     hero.y = 1248
+    hero.setMapCheckFunc(tmap.isallow)
     tcm.x = 0
     tcm.y = 1248+32-screen.get_height()
     tcm.bindhero(hero)
@@ -84,4 +85,4 @@ if '__main__' == __name__:
         pygame.draw.rect(screen, black, (0, 0, 640, 480))
         tcm.display(screen)
         pygame.display.update()
-        clock.tick(30)
+        clock.tick(50)

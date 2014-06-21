@@ -52,7 +52,7 @@ class tengmap:
         for unit in self.unit_list:
             unit.setimg(self.imgs[unit.img_dir])
         maparr = down['maparr']
-        
+        canstand = down['canstand']
         
         self.unit_sec_list = self.loadUnits(up['unit_list'])
         for unit in self.unit_sec_list:
@@ -61,10 +61,13 @@ class tengmap:
         
         self.width_cnt = down['width_cnt']
         self.height_cnt = down['height_cnt']
-        self.width = self.width_cnt * 32
-        self.height = self.height_cnt * 32
+        self.unit_width = 32
+        self.unit_height = 32
+        self.width = self.width_cnt * self.unit_width
+        self.height = self.height_cnt * self.unit_height
 
         self._map =[[None for i in xrange(self.height_cnt)] for j in xrange(self.width_cnt)]
+        self._canstand = canstand
         self._map_sec =[[None for i in xrange(self.height_cnt)] for j in xrange(self.width_cnt)]
         for i in xrange(self.width_cnt):
             for j in xrange(self.height_cnt):
@@ -117,6 +120,45 @@ class tengmap:
             for unit in arr:
                 if unit is not None:
                     unit.display(screen, delta_x, delta_y)
+    def ok(self, x, y):
+        x = int(x)
+        y = int(y)
+        indx = x/self.unit_width + (1 if x % self.unit_width == 0 else 0)
+        indy = y/self.unit_height + (1 if y % self.unit_height == 0 else 0)
+
+        if indx >= self.width_cnt:
+            return True
+        if indy >= self.height_cnt:
+            return True
+        return 0 == self._canstand[indx][indy]
+
+    def feql(self, a, b):
+        return abs(a-b) < 1e-8
+    def isallow(self, sx, sy, x, y):
+        eps = 3
+        x0, y0 = x+eps, y+eps
+        x1, y1 = x+self.unit_width-eps, y+eps
+        x2, y2 = x+eps, self.unit_height+y-eps
+        x3, y3 = x+self.unit_width-eps, self.unit_height+y-eps
+        
+        if self.feql(sx, x):
+            if sy < y: #down
+                return self.ok(x2, y2) and self.ok(x3, y3)
+                #return self.ok(x3, y3)
+            elif sy > y: #up
+                return self.ok(x0, y0) and self.ok(x1, y1)
+                #return self.ok(x1, y1)
+        if self.feql(sy, y):
+            if sx < x: #right
+                return self.ok(x1, y1) and self.ok(x3, y3)
+            elif sx > x: #left
+                return self.ok(x0, y0) and self.ok(x2, y2)
+        return True
+        
+        #return self.ok(x0, y0) and self.ok(x1, y1) and self.ok(x2, y2) and self.ok(x3, y3)
+        #print 'x %f y %f indx %d indy %d canstand %d' % (x, y, indx, indy, self._canstand[indx][indy])
+        
+        
 
 if '__main__' == __name__:
     screen = pygame.display.set_mode((640, 480), 0, 32)

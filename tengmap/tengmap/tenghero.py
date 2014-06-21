@@ -26,15 +26,20 @@ class tengHero:
         self.clock = pygame.time.Clock()
         self.boundx = 0
         self.boundy = 0
+        self.fcheck = None
+
     def setbound(self, x, y):
         self.boundx = x
         self.boundy = y
+        
+    def setMapCheckFunc(self, fcheck):
+        self.fcheck = fcheck
     
 
     def blit(self, surface, delta_x, delta_y):
         tx = self.state * self.width
         ty = self.direction * self.height
-        #print self.x, ' ', self.y, ' ', tx, ' ', ty, ' ', self.width, ' ', self.height
+        #print 'hero : ', self.x, ' ', self.y, ' ', tx, ' ', ty, ' ', self.width, ' ', self.height
         surface.blit(self.img, (self.x - delta_x, self.y - delta_y), (tx, ty, self.width, self.height))
 
     def dis(self, x0, y0, x1, y1):
@@ -47,15 +52,21 @@ class tengHero:
         y = min(y, self.boundy - self.height)
         x = max(0, x)
         y = max(0, y)
+        
+        if self.fcheck is not None:
+            if not self.fcheck(self.x, self.y, x, y):
+                return self.x, self.y
         return x, y
 
     def run(self):
         vctitem = self.vector[self.direction]
         if self.speed != 0:
             passedtime = self.clock.tick() / 1000.
-            self.x += vctitem['x'] * self.speed * passedtime
-            self.y += vctitem['y'] * self.speed * passedtime
-            self.x, self.y = self.fix(self.x, self.y)
+            tx = self.x + vctitem['x'] * self.speed * passedtime
+            ty = self.y + vctitem['y'] * self.speed * passedtime
+            #self.x += vctitem['x'] * self.speed * passedtime
+            #self.y += vctitem['y'] * self.speed * passedtime
+            self.x, self.y = self.fix(tx, ty)
             if self.dis(self.change_state_x, self.change_state_y, self.x, self.y) > 10:
                 self.change_state_x = self.x
                 self.change_state_y = self.y

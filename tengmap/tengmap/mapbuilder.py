@@ -23,11 +23,13 @@ def saveinfo(info, secinfo, width, height):
         ulist.append(tmp)
         return cnt
 
+    canstand = [[0 for j in xrange(height)] for i in xrange(width)]
     for i in xrange(width):
         for j in xrange(height):
             if info[i][j] is not None:
                 ind = getind(info[i][j], ulist)
                 maparr[i][j] = ind
+                canstand[i][j] = info[i][j]['canstand']
             if secinfo[i][j] is not None:
                 ind = getind(secinfo[i][j], useclist)
                 mapsecarr[i][j] = ind
@@ -35,7 +37,8 @@ def saveinfo(info, secinfo, width, height):
     down = {"unit_list":ulist,
     "width_cnt":width,
     "height_cnt":height,
-    "maparr":maparr}
+    "maparr":maparr,
+    "canstand":canstand}
     
     up = {"unit_list":useclist,
     "width_cnt":width,
@@ -70,12 +73,14 @@ if '__main__' == __name__:
         arr = down['maparr']
         ulist_sec = up['unit_list']
         arr_sec = up['maparr']
+        canstand = down['canstand']
         mapinfo = [[None for j in xrange(maph)] for i in xrange(mapw)]
         mapsecinfo = [[None for j in xrange(maph)] for i in xrange(mapw)]
         #mapinfo1 = [[None for j in xrange(maph)] for i in xrange(mapw)]
         for i in xrange(mapw):
             for j in xrange(maph):
                 mapinfo[i][j] = {'indx':ulist[arr[i][j]]['indx'], 'indy':ulist[arr[i][j]]['indy']}
+                mapinfo[i][j]['canstand'] = canstand[i][j]
         for i in xrange(mapw):
             for j in xrange(maph):
                 if arr_sec[i][j] is None:
@@ -95,6 +100,7 @@ if '__main__' == __name__:
     black = pygame.Color(0, 0, 0, 0)
     green = pygame.Color(0, 255, 0, 0)
     blue = pygame.Color(0, 0, 255, 0)
+    red = pygame.Color(255, 0, 0, 0)
     delta_x = 0
     delta_y = 0
     width = 32
@@ -144,7 +150,13 @@ if '__main__' == __name__:
                         if KMOD_SHIFT & event.mod:
                             mapsecinfo[indmx][indmy] = {'indx':indx, 'indy':indy}
                         else:
-                            mapinfo[indmx][indmy] = {'indx':indx, 'indy':indy}
+                            mapinfo[indmx][indmy] = {'indx':indx, 'indy':indy, 'canstand':True}
+                    if K_s == event.key:
+                        if mapinfo[indmx][indmy] is None:
+                            mapinfo[indmx][indmy]['canstand'] = {'indx':indx, 'indy':indy, 'canstand':0}
+                        mapinfo[indmx][indmy]['canstand'] += 1
+                        mapinfo[indmx][indmy]['canstand'] = mapinfo[indmx][indmy]['canstand'] % 2
+                        
                     for key in kposy:
                         if key == event.key:
                             indmx += vector[kposy[key]]['x']
@@ -173,6 +185,11 @@ if '__main__' == __name__:
                     screen.blit(img, (basex+i*width-delta_mx*width, basey+j*width-delta_my*height), (mapinfo[i][j]['indx']*width, mapinfo[i][j]['indy']*height, width, height))
                 if mapsecinfo[i][j] is not None:
                     screen.blit(img, (basex+i*width-delta_mx*width, basey+j*width-delta_my*height), (mapsecinfo[i][j]['indx']*width, mapsecinfo[i][j]['indy']*height, width, height))
+                if mapinfo[i][j] is not None:
+                    if mapinfo[i][j].get('canstand', None) is None:
+                        mapinfo[i][j]['canstand'] = 0
+                    if 1 == mapinfo[i][j]['canstand']:
+                        pygame.draw.rect(screen, red, (basex+i*width-delta_mx*width, basey+j*width-delta_my*height, width, height), 2)
                     #if mapinfo1[i][j]['indx'] is not None:
                     #    screen.blit(img, (basex+i*width-delta_mx*width, basey+j*width-delta_my*height), (mapinfo1[i][j]['indx']*width, mapinfo1[i][j]['indy']*height, width, height))
         pygame.draw.rect(screen, blue if bleft else green, (basex + (indmx - delta_mx)*width, basey + (indmy - delta_my) * height, width, height), 2)

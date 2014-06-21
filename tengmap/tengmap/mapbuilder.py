@@ -150,7 +150,7 @@ if '__main__' == __name__:
                         if KMOD_SHIFT & event.mod:
                             mapsecinfo[indmx][indmy] = {'indx':indx, 'indy':indy}
                         else:
-                            mapinfo[indmx][indmy] = {'indx':indx, 'indy':indy, 'canstand':True}
+                            mapinfo[indmx][indmy] = {'indx':indx, 'indy':indy, 'canstand':0}
                     if K_s == event.key:
                         if mapinfo[indmx][indmy] is None:
                             mapinfo[indmx][indmy]['canstand'] = {'indx':indx, 'indy':indy, 'canstand':0}

@@ -11,15 +11,15 @@ class gamescene1(tengscene.tengscene):
         
     def on_over(self):
         print 'on_over'
-        
     def prepair(self):
-        self.hero.x = 320-32
-        self.hero.y = 1248
+        self.hero.x = 300
+        self.hero.y = 100
         self.tcm.x = 0
-        self.tcm.y = 1248+32-screen.get_height()
+        self.tcm.y = 0
+        
 
 if '__main__' == __name__:
     screen = pygame.display.set_mode((640, 480), 0, 32)
-    scene = gamescene1(screen, './maps/scene1', './pic/153.png')
+    scene = gamescene1(screen, './maps/scene2', './pic/153.png')
     scene.display()
     

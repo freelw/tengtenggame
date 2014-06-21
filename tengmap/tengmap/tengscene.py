@@ -29,10 +29,15 @@ class tengscene:
         self.black = pygame.Color(0, 0, 0, 0)
         self.clock = pygame.time.Clock()
         
+        self.prepair()
+        
     def event_callback(self, event):
         raise tengException('not impl')
         
     def on_over(self):
+        raise tengException('not impl')
+        
+    def prepair(self):
         raise tengException('not impl')
 
     def display(self):

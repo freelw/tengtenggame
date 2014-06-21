@@ -10,17 +10,24 @@ class gamescene3(tengscene.tengscene):
         pass
         
     def on_over(self):
-        pass
+        return self.nextscene
         
     def prepair(self):
         self.hero.x = 0
-        self.hero.y = 0
+        self.hero.y = 1
         self.hero.direction = 3
         self.tcm.x = 0
         self.tcm.y = 0
+        self.nextscene = None
     
     def on_idle(self):
-        pass
+        if 0 == self.hero.y:
+            self.hero.y = 1
+            self.hero.direction = 1
+            self.hero.speed = 0
+            self.nextscene = 'shitang'
+            self.setover()
+            
 
 if '__main__' == __name__:
     screen = pygame.display.set_mode((640, 480), 0, 32)

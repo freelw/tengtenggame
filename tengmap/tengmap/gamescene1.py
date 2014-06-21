@@ -10,7 +10,7 @@ class gamescene1(tengscene.tengscene):
         pass
         
     def on_over(self):
-        pass
+        return self.nextscene
         
     def prepair(self):
         self.hero.x = 320-32
@@ -18,12 +18,14 @@ class gamescene1(tengscene.tengscene):
         self.hero.direction = 3
         self.tcm.x = 0
         self.tcm.y = 1248+32-self.screen.get_height()
+        self.nextscene = None
     
     def on_idle(self):
         if self.hero.y == 1248:
             self.hero.y = 1248-1
             self.hero.speed = 0
             self.hero.direction = 3
+            self.nextscene = 'shitang'
             self.setover()
 
 if '__main__' == __name__:

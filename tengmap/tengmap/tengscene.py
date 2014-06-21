@@ -9,6 +9,7 @@ import pygame
 from pygame.locals import *
 pygame.init()
 from sys import exit
+import math
 
 class tengException(Exception):
     def __self(self, log):
@@ -47,7 +48,7 @@ class tengscene:
     def display(self):
         while True:
             if self.over:
-                break
+                return self.on_over()
             for event in pygame.event.get():
                 if event.type == QUIT:
                     exit()
@@ -66,3 +67,8 @@ class tengscene:
     
     def setbegin(self):
         self.over = False
+        
+    def dis(self, x0, y0, x1, y1):
+        lx = x1 - x0
+        ly = y1 - y0
+        return math.sqrt(lx**2+ly**2)

@@ -33,7 +33,13 @@ class gamescene2(tengscene.tengscene):
             self.hero.direction = 3
             self.nextscene = 'qinshi'
             self.setover()
-        
+        elif self.dis(570, 260, self.hero.x, self.hero.y) < 20:
+            self.hero.x = 570
+            self.hero.y = 281
+            self.hero.speed = 0
+            self.hero.direction = 3
+            self.nextscene = 'shitangli'
+            self.setover()
 
 if '__main__' == __name__:
     screen = pygame.display.set_mode((640, 480), 0, 32)

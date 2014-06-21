@@ -51,7 +51,7 @@ class BuildExe:
         #------------------------------------------------------#
 
         # 起始py文件
-        self.script = "tengcamera.py"
+        self.script = "maingame.py"
         # 游戏名
         self.project_name = "MyGames"
         # 游戏site

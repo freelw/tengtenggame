@@ -7,7 +7,7 @@ pygame.init()
 import json
 import sys
 
-def saveinfo(info, secinfo, width, height):
+def saveinfo(info, secinfo, width, height, fname):
     ulist = []
     useclist = []
     maparr = [[0 for j in xrange(height)] for i in xrange(width)]
@@ -47,8 +47,7 @@ def saveinfo(info, secinfo, width, height):
     
     res = {"down":down,"up":up}
     res = json.dumps(res)
-    
-    f = open('./buildmapinfo', 'w')
+    f = open(fname, 'w')
     f.write(res)
     f.close()
             
@@ -56,7 +55,7 @@ if '__main__' == __name__:
     if len(sys.argv) < 3:
         print 'argv error'
         exit()
-    
+    fname = './buildmapinfo'
     if '-f' == sys.argv[1]:
         fname = sys.argv[2]
         f = open(fname)
@@ -128,7 +127,7 @@ if '__main__' == __name__:
                     bleft = not bleft
                 if bleft:
                     if K_RETURN == event.key:
-                        saveinfo(mapinfo, mapsecinfo, mapw, maph)
+                        saveinfo(mapinfo, mapsecinfo, mapw, maph, fname)
                     for key in kposy:
                         if key == event.key:
                             indx += vector[kposy[key]]['x']

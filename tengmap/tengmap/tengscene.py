@@ -8,6 +8,7 @@ import tengcamera
 import pygame
 from pygame.locals import *
 pygame.init()
+from sys import exit
 
 class tengException(Exception):
     def __self(self, log):
@@ -39,6 +40,9 @@ class tengscene:
         
     def prepair(self):
         raise tengException('not impl')
+        
+    def on_idle(self):
+        raise tengException('not impl')
 
     def display(self):
         while True:
@@ -55,6 +59,10 @@ class tengscene:
             self.tcm.display(self.screen)
             pygame.display.update()
             self.clock.tick(50)
+            self.on_idle()
 
     def setover(self):
         self.over = True
+    
+    def setbegin(self):
+        self.over = False

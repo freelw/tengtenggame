@@ -7,16 +7,24 @@ import tengscene
 
 class gamescene1(tengscene.tengscene):
     def event_callback(self, event):
-        print 'gamescene1'
+        pass
         
     def on_over(self):
-        print 'on_over'
+        pass
         
     def prepair(self):
         self.hero.x = 320-32
-        self.hero.y = 1248
+        self.hero.y = 1248-1
+        self.hero.direction = 3
         self.tcm.x = 0
-        self.tcm.y = 1248+32-screen.get_height()
+        self.tcm.y = 1248+32-self.screen.get_height()
+    
+    def on_idle(self):
+        if self.hero.y == 1248:
+            self.hero.y = 1248-1
+            self.hero.speed = 0
+            self.hero.direction = 3
+            self.setover()
 
 if '__main__' == __name__:
     screen = pygame.display.set_mode((640, 480), 0, 32)

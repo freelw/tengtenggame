@@ -27,6 +27,7 @@ class tengHero:
         self.boundx = 0
         self.boundy = 0
         self.fcheck = None
+        self.lastkey = None
 
     def setbound(self, x, y):
         self.boundx = x
@@ -81,6 +82,7 @@ class tengHero:
         if event.type == KEYDOWN:
             for key in self.kposy.keys():
                 if event.key == key:
+                    self.lastkey = key
                     self.direction = self.kposy[key]
                     if 0 == self.speed:
                         self.clock.tick()
@@ -88,8 +90,9 @@ class tengHero:
         elif event.type == KEYUP:
             for key in self.kposy:
                 if event.key == key:
-                    self.speed = 0
-                    break
+                    if self.lastkey == event.key:
+                        self.speed = 0
+                        break
 
 if '__main__' == __name__:
     screen = pygame.display.set_mode((640, 480), 0, 32)

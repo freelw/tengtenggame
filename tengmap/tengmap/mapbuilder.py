@@ -6,6 +6,7 @@ from pygame.locals import *
 pygame.init()
 import json
 import sys
+from sys import exit
 
 def saveinfo(info, secinfo, width, height, fname):
     ulist = []

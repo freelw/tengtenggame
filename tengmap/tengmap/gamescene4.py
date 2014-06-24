@@ -27,8 +27,12 @@ class gamescene4(tengscene.tengscene):
             self.hero.speed = 0
             self.nextscene = 'shitang'
             self.setover()
-            
 
+    def get_title(self):
+        return u"食堂"
+
+    def get_box_msg(self):
+        return u"好饿呀！！！"
 if '__main__' == __name__:
     screen = pygame.display.set_mode((640, 480), 0, 32)
     scene = gamescene4(screen, './maps/scene4', './pic/153.png')

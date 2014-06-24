@@ -29,9 +29,18 @@ class tengscene:
         self.hero.setMapCheckFunc(self.tmap.isallow)
         self.tcm.bindhero(self.hero)
         self.black = pygame.Color(0, 0, 0, 0)
+        self.blue = pygame.Color(0, 0, 255)
+        self.white = pygame.Color(255, 255, 255)
         self.clock = pygame.time.Clock()
+        self.font = None
+        self.title_surface = None
+        self.title_left = None
+        self.msglock = False
+        self.msg = None
+        self.msg_surface = None
         
         self.prepair()
+        
         
     def event_callback(self, event):
         raise tengException('not impl')
@@ -44,6 +53,42 @@ class tengscene:
         
     def on_idle(self):
         raise tengException('not impl')
+    
+    def get_title(self):
+        return 'title'
+        
+    def get_font(self):
+        if self.font is None:
+            self.font = pygame.font.SysFont("microsoftyahei", 16)
+        return self.font
+
+    def get_title_surface(self):
+        if self.title_surface is None:
+            self.title_surface = self.get_font().render(self.get_title(), True, (0, 0, 255))
+        return self.title_surface
+        
+    def get_box_msg(self):
+        return ''
+        
+    def check_K_RETURN(self, event):
+        if event.type == KEYDOWN:
+            if K_RETURN == event.key:
+                if not self.msglock:
+                    self.msg = self.get_box_msg()
+                    if '' != self.msg:
+                        self.msglock = True
+                        self.hero.speed = 0
+                else:
+                    self.msglock = False
+                    self.msg_surface = None
+
+    def show_msg(self):
+        pygame.draw.rect(self.screen, self.blue, (0 , 2./3 * self.screen.get_height(), self.screen.get_width(), self.screen.get_height()))
+        pygame.draw.rect(self.screen, self.white, (0 , 2./3 * self.screen.get_height(), self.screen.get_width()-2, self.screen.get_height()-2), 2)
+        if self.msg_surface is None:
+            self. msg_surface = self.get_font().render(self.msg, True, (255, 255, 255))
+        
+        self.screen.blit(self.msg_surface, (5, 2./3 * self.screen.get_height() + 5))
 
     def display(self):
         while True:
@@ -52,12 +97,19 @@ class tengscene:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     exit()
-                self.tcm.event_callback(event)
-                self.event_callback(event)
+                if not self.msglock:
+                    self.tcm.event_callback(event)
+                    self.event_callback(event)
+                    
+                self.check_K_RETURN(event)
+                
             self.tcm.run()
             self.tcm.fixbyhero()
             pygame.draw.rect(self.screen, self.black, (0, 0, self.screen.get_width(), self.screen.get_height()))
             self.tcm.display(self.screen)
+            self.screen.blit(self.get_title_surface(), ((self.screen.get_width() - self.get_title_surface().get_width())/2, 0))
+            if self.msglock:
+                self.show_msg()
             pygame.display.update()
             self.clock.tick(50)
             self.on_idle()

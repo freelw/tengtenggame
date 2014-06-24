@@ -27,6 +27,11 @@ class gamescene1(tengscene.tengscene):
             self.hero.direction = 3
             self.nextscene = 'shitang'
             self.setover()
+    def get_title(self):
+        return u"祭坛"
+        
+    def get_box_msg(self):
+        return u"这里就是传说中的祭坛吗。。。？"
 
 if '__main__' == __name__:
     screen = pygame.display.set_mode((640, 480), 0, 32)

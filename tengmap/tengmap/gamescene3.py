@@ -27,7 +27,12 @@ class gamescene3(tengscene.tengscene):
             self.hero.speed = 0
             self.nextscene = 'shitang'
             self.setover()
-            
+
+    def get_title(self):
+        return u"寝室"
+        
+    def get_box_msg(self):
+        return u"呼呼。。。。呼呼。。。。"
 
 if '__main__' == __name__:
     screen = pygame.display.set_mode((640, 480), 0, 32)

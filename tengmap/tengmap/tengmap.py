@@ -141,33 +141,19 @@ class tengmap:
         x1, y1 = x+self.unit_width-eps, y+eps
         x2, y2 = x+eps, self.unit_height+y-eps
         x3, y3 = x+self.unit_width-eps, self.unit_height+y-eps
-        
-        def printxy(x0, x1, x2, x3, y0, y1, y2, y3):
-            print "x0 y0 : %s %s" % (x0, y0)
-            print "x1 y1 : %s %s" % (x1, y1)
-            print "x2 y2 : %s %s" % (x2, y2)
-            print "x3 y3 : %s %s" % (x3, y3)
             
         if self.feql(sx, x):
             if sy < y: #down
-                print "1 : %s %s" % (self.ok(x2, y2, 2), self.ok(x3, y3, 3))
-                printxy(x0, x1, x2, x3, y0, y1, y2, y3)
                 return self.ok(x2, y2, 2) and self.ok(x3, y3, 3)
-               
             elif sy > y: #up
-                print "2 : %s %s" % (self.ok(x0, y0, 0), self.ok(x1, y1, 1))
-                printxy(x0, x1, x2, x3, y0, y1, y2, y3)
                 return self.ok(x0, y0, 0) and self.ok(x1, y1, 1)
                
         if self.feql(sy, y):
             if sx < x: #right
-                print "3 : %s %s" % (self.ok(x1, y1, 1), self.ok(x3, y3, 3))
-                printxy(x0, x1, x2, x3, y0, y1, y2, y3)
                 return self.ok(x1, y1, 1) and self.ok(x3, y3, 3)
             elif sx > x: #left
-                print "4 : %s %s" % (self.ok(x0, y0, 0), self.ok(x2, y2, 2))
-                printxy(x0, x1, x2, x3, y0, y1, y2, y3)
                 return self.ok(x0, y0, 0) and self.ok(x2, y2, 2)
+
         return True
         
         #return self.ok(x0, y0) and self.ok(x1, y1) and self.ok(x2, y2) and self.ok(x3, y3)

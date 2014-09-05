@@ -54,6 +54,8 @@ class tengHero:
         x = max(0, x)
         y = max(0, y)
         
+        print "%s %s %s %s" % (self.x, self.y, x, y)
+        
         if self.fcheck is not None:
             if not self.fcheck(self.x, self.y, x, y):
                 return self.x, self.y

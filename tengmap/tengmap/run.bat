@@ -1,0 +1,2 @@
+python maingame.py
+pause

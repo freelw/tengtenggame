@@ -8,7 +8,7 @@ import json
 import sys
 from sys import exit
 
-def saveinfo(info, secinfo, width, height, fname):
+def saveinfo(info, secinfo, width, height, fname, picnames):
     ulist = []
     useclist = []
     maparr = [[0 for j in xrange(height)] for i in xrange(width)]
@@ -17,10 +17,10 @@ def saveinfo(info, secinfo, width, height, fname):
     def getind(item, ulist):
         cnt = 0
         for u in ulist:
-            if u['indx'] == item['indx'] and u['indy'] == item['indy']:
+            if u['indx'] == item['indx'] and u['indy'] == item['indy'] and u['img_dir'] == item['picname']:
                 return cnt
             cnt += 1
-        tmp = {"img_dir":"./pic/map.png", "indx":item['indx'], "indy":item['indy']}
+        tmp = {"img_dir":item['picname'], "indx":item['indx'], "indy":item['indy']}
         ulist.append(tmp)
         return cnt
 
@@ -34,6 +34,7 @@ def saveinfo(info, secinfo, width, height, fname):
             if secinfo[i][j] is not None:
                 ind = getind(secinfo[i][j], useclist)
                 mapsecarr[i][j] = ind
+    print useclist
         
     down = {"unit_list":ulist,
     "width_cnt":width,
@@ -46,19 +47,25 @@ def saveinfo(info, secinfo, width, height, fname):
     "height_cnt":height,
     "maparr":mapsecarr}
     
-    res = {"down":down,"up":up}
+    res = {"down":down,"up":up, "imgs":picnames}
     res = json.dumps(res)
     f = open(fname, 'w')
     f.write(res)
     f.close()
             
 if '__main__' == __name__:
-    if len(sys.argv) < 3:
+    if len(sys.argv) < 4:
         print 'argv error'
         exit()
     fname = './buildmapinfo'
     if '-f' == sys.argv[1]:
         fname = sys.argv[2]
+        picnames = sys.argv[3]
+        if 'nopic' == picnames:
+            picnames = []
+        else:
+            picnames = picnames.split(';')
+        print picnames
         f = open(fname)
         content = ''
         for line in f:
@@ -74,19 +81,28 @@ if '__main__' == __name__:
         ulist_sec = up['unit_list']
         arr_sec = up['maparr']
         canstand = down['canstand']
+        tpicnames = tmp.get('imgs', picnames)
+        finalpicnames = tpicnames[:]
+        for picname in picnames:
+            if not picname in tpicnames:
+                finalpicnames.append(picname)
+        picnames = finalpicnames
+        if 0 == len(picnames):
+            picnames.append('./pic/map.png')
+        print picnames
         mapinfo = [[None for j in xrange(maph)] for i in xrange(mapw)]
         mapsecinfo = [[None for j in xrange(maph)] for i in xrange(mapw)]
         #mapinfo1 = [[None for j in xrange(maph)] for i in xrange(mapw)]
         for i in xrange(mapw):
             for j in xrange(maph):
-                mapinfo[i][j] = {'indx':ulist[arr[i][j]]['indx'], 'indy':ulist[arr[i][j]]['indy']}
+                mapinfo[i][j] = {'indx':ulist[arr[i][j]]['indx'], 'indy':ulist[arr[i][j]]['indy'], 'picname':ulist[arr[i][j]]['img_dir']}
                 mapinfo[i][j]['canstand'] = canstand[i][j]
         for i in xrange(mapw):
             for j in xrange(maph):
                 if arr_sec[i][j] is None:
                     mapsecinfo[i][j] = None
                 else:
-                    mapsecinfo[i][j] = {'indx':ulist_sec[arr_sec[i][j]]['indx'], 'indy':ulist_sec[arr_sec[i][j]]['indy']}
+                    mapsecinfo[i][j] = {'indx':ulist_sec[arr_sec[i][j]]['indx'], 'indy':ulist_sec[arr_sec[i][j]]['indy'], 'picname':ulist_sec[arr_sec[i][j]]['img_dir']}
     else:
         mapw = int(sys.argv[1])
         maph = int(sys.argv[2])
@@ -106,7 +122,15 @@ if '__main__' == __name__:
     width = 32
     height = 32
     #img = pygame.image.load('./pic/map.png').convert()
-    img = pygame.image.load('./pic/map.png').convert_alpha()
+    imgs = {}
+    for name in picnames:
+        tmpimg = pygame.image.load(name).convert_alpha()
+        print name
+        imgs[name] = tmpimg
+    print imgs
+    picindex = 0
+    picname = picnames[picindex]
+    img = imgs[picname]
     indx = 0
     indy = 0
     vector = [{'x':0, 'y':1}, {'x':-1, 'y':0}, {'x':1, 'y':0}, {'x':0, 'y':-1}]
@@ -117,7 +141,7 @@ if '__main__' == __name__:
     delta_mx = 0
     delta_my = 0
     
-    basex = 9 * width
+    basex = img.get_width() + width
     basey = 0
     while True:
         for event in pygame.event.get():
@@ -128,7 +152,14 @@ if '__main__' == __name__:
                     bleft = not bleft
                 if bleft:
                     if K_RETURN == event.key:
-                        saveinfo(mapinfo, mapsecinfo, mapw, maph, fname)
+                        saveinfo(mapinfo, mapsecinfo, mapw, maph, fname, picnames)
+                    if K_c == event.key:#change pic
+                        picindex = (picindex + 1) % len(picnames)
+                        picname = picnames[picindex]
+                        img = imgs[picname]
+                        basex = img.get_width() + width
+                        indx = 0
+                        indy = 0
                     for key in kposy:
                         if key == event.key:
                             indx += vector[kposy[key]]['x']
@@ -137,10 +168,10 @@ if '__main__' == __name__:
                                 indx = 0
                             if indy < 0:
                                 indy = 0
-                            if indx >= 8:
-                                indx = 7
-                            if indy >= 112:
-                                indy = 111
+                            if indx >= img.get_width() / width:
+                                indx = img.get_width() / width - 1
+                            if indy >= img.get_height() / height:
+                                indy = img.get_height() / height - 1
                             while delta_y * height + sh < indy * height + height:
                                 delta_y += 1
                             while delta_y * height > indy * height:
@@ -148,9 +179,10 @@ if '__main__' == __name__:
                 else: # not bleft
                     if K_RETURN == event.key:
                         if KMOD_SHIFT & event.mod:
-                            mapsecinfo[indmx][indmy] = {'indx':indx, 'indy':indy}
+                            print picname
+                            mapsecinfo[indmx][indmy] = {'indx':indx, 'indy':indy, 'picname':picname}
                         else:
-                            mapinfo[indmx][indmy] = {'indx':indx, 'indy':indy, 'canstand':0}
+                            mapinfo[indmx][indmy] = {'indx':indx, 'indy':indy, 'canstand':0, 'picname':picname}
                     if K_s == event.key:
                         if mapinfo[indmx][indmy] is None:
                             mapinfo[indmx][indmy]['canstand'] = {'indx':indx, 'indy':indy, 'canstand':0}
@@ -182,9 +214,11 @@ if '__main__' == __name__:
         for j in xrange(maph):
             for i in xrange(mapw):
                 if mapinfo[i][j] is not None:
-                    screen.blit(img, (basex+i*width-delta_mx*width, basey+j*width-delta_my*height), (mapinfo[i][j]['indx']*width, mapinfo[i][j]['indy']*height, width, height))
+                    timg = imgs[mapinfo[i][j]['picname']]
+                    screen.blit(timg, (basex+i*width-delta_mx*width, basey+j*width-delta_my*height), (mapinfo[i][j]['indx']*width, mapinfo[i][j]['indy']*height, width, height))
                 if mapsecinfo[i][j] is not None:
-                    screen.blit(img, (basex+i*width-delta_mx*width, basey+j*width-delta_my*height), (mapsecinfo[i][j]['indx']*width, mapsecinfo[i][j]['indy']*height, width, height))
+                    timg = imgs[mapsecinfo[i][j]['picname']]
+                    screen.blit(timg, (basex+i*width-delta_mx*width, basey+j*width-delta_my*height), (mapsecinfo[i][j]['indx']*width, mapsecinfo[i][j]['indy']*height, width, height))
                 if mapinfo[i][j] is not None:
                     if mapinfo[i][j].get('canstand', None) is None:
                         mapinfo[i][j]['canstand'] = 0

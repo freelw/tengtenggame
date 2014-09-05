@@ -43,8 +43,9 @@ class tengmap:
     def __init__(self, info_dir='./mapinfo', r_dir_list = ['./pic/map.png']):
         self.info_dir = info_dir
         self.r_dir_list = r_dir_list
-        self.imgs = self.loadImgs(self.r_dir_list)
+        #self.imgs = self.loadImgs(self.r_dir_list)
         self.info = self.loadInfo(self.info_dir)
+        self.imgs = self.loadImgs(self.info['imgs'])
         down = self.info['down']
         up = self.info['up']
 

@@ -106,6 +106,8 @@ if '__main__' == __name__:
     else:
         mapw = int(sys.argv[1])
         maph = int(sys.argv[2])
+        picnames = sys.argv[3]
+        picnames = picnames.split(';')
         mapinfo = [[None for j in xrange(maph)] for i in xrange(mapw)]
         mapsecinfo = [[None for j in xrange(maph)] for i in xrange(mapw)]
         #mapinfo1 = [[None for j in xrange(maph)] for i in xrange(mapw)]
@@ -124,8 +126,8 @@ if '__main__' == __name__:
     #img = pygame.image.load('./pic/map.png').convert()
     imgs = {}
     for name in picnames:
-        tmpimg = pygame.image.load(name).convert_alpha()
         print name
+        tmpimg = pygame.image.load(name).convert_alpha()
         imgs[name] = tmpimg
     print imgs
     picindex = 0

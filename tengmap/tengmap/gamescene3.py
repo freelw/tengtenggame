@@ -21,11 +21,19 @@ class gamescene3(tengscene.tengscene):
         self.nextscene = None
     
     def on_idle(self):
+        #print self.hero.x, self.hero.y
         if 0 == self.hero.y:
             self.hero.y = 1
             self.hero.direction = 1
             self.hero.speed = 0
             self.nextscene = 'shitang'
+            self.setover()
+        elif 35*32 - 1 <= self.hero.x and 9*32 >= self.hero.y:
+            self.hero.x = 35*32 - 2
+            self.hero.y = 9*32 + 1
+            self.hero.direction = 1
+            self.hero.speed = 0
+            self.nextscene = 'qinshierlou'
             self.setover()
 
     def get_title(self):

@@ -13,15 +13,24 @@ class gamescene5(tengscene.tengscene):
         return self.nextscene
         
     def prepair(self):
-        self.hero.x = 320-32
-        self.hero.y = 320-1
+        self.hero.x = 320
+        self.hero.y = 350-1
         self.hero.direction = 3
         self.tcm.x = 0
         self.tcm.y = 0
         self.nextscene = None
     
     def on_idle(self):
-        pass
+        if 350 <= self.hero.y:
+            self.hero.x = 320
+            self.hero.y = 350-1
+            self.hero.direction = 3
+            self.hero.speed = 0
+            self.tcm.x = 0
+            self.tcm.y = 0
+            self.nextscene = 'qinshi'
+            self.setover()
+
     def get_title(self):
         return u"寝室二楼"
         

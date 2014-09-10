@@ -9,6 +9,7 @@ import gamescene1
 import gamescene2
 import gamescene3
 import gamescene4
+import gamescene5
 from sys import exit
 
 if '__main__' == __name__:
@@ -18,15 +19,19 @@ if '__main__' == __name__:
     scene1 = gamescene1.gamescene1(screen, './maps/scene1', './pic/153.png')
     scene3 = gamescene3.gamescene3(screen, './maps/scene3', './pic/153.png')
     scene4 = gamescene4.gamescene4(screen, './maps/scene4', './pic/153.png')
+    scene5 = gamescene5.gamescene5(screen, './maps/scene5', './pic/153.png')
+    
     scenedic = {'jitan':scene1,
             'shitang':scene2,
             'qinshi':scene3,
-            'shitangli':scene4
+            'shitangli':scene4,
+            'qinshierlou':scene5
     }
-    nextscene = scene2
+    nextscene = scene3
     while True:
         nextscene.setbegin()
         scenename = nextscene.display()
         if scenename is None:
             break
+        print scenename
         nextscene = scenedic[scenename]

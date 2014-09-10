@@ -6,6 +6,7 @@ pygame.init()
 import tengscene
 
 class gamescene1(tengscene.tengscene):
+
     def event_callback(self, event):
         pass
         

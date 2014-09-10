@@ -32,7 +32,9 @@ class gamescene4(tengscene.tengscene):
         return u"食堂"
 
     def get_box_msg(self):
-        return u"好饿呀！！！"
+        yield u"好饿呀！！！"
+        yield ''
+
 if '__main__' == __name__:
     screen = pygame.display.set_mode((640, 480), 0, 32)
     scene = gamescene4(screen, './maps/scene4', './pic/153.png')

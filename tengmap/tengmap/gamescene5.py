@@ -33,9 +33,20 @@ class gamescene5(tengscene.tengscene):
 
     def get_title(self):
         return u"寝室二楼"
+    
+    def shallchat1(self):
+        print self.hero.x, self.hero.y
+        return self.hero.x >= 320 and self.hero.x <=350 and self.hero.y <= 256 and self.hero.y >= 220   
         
     def get_box_msg(self):
-        return u"DDDDDDota!!!!!"
+        if self.shallchat1():
+            yield u'恭喜你来到LW的世界！！！！'
+            yield u'这里是LW世界的第一关，我是第一个线索！'
+            yield u'找到祭坛以通关！'
+            yield u'出发吧少年！'
+            yield ''
+        yield u"DDDDDDota!!!!!"
+        yield ''
 
 if '__main__' == __name__:
     screen = pygame.display.set_mode((640, 480), 0, 32)

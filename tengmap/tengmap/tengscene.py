@@ -74,12 +74,16 @@ class tengscene:
         if event.type == KEYDOWN:
             if K_RETURN == event.key:
                 if not self.msglock:
-                    self.msg = self.get_box_msg()
+                    self.msgiter = self.get_box_msg()
+                    self.msg = self.msgiter.next()
                     if '' != self.msg:
                         self.msglock = True
                         self.hero.speed = 0
                 else:
-                    self.msglock = False
+                    self.msg = self.msgiter.next()
+                    if '' == self.msg:
+                        self.msg = ''
+                        self.msglock = False
                     self.msg_surface = None
 
     def show_msg(self):

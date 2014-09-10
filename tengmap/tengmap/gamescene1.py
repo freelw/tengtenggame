@@ -32,7 +32,8 @@ class gamescene1(tengscene.tengscene):
         return u"祭坛"
         
     def get_box_msg(self):
-        return u"这里就是传说中的祭坛吗。。。？"
+        yield u"这里就是传说中的祭坛吗。。。？"
+        yield ''
 
 if '__main__' == __name__:
     screen = pygame.display.set_mode((640, 480), 0, 32)

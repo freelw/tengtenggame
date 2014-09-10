@@ -44,7 +44,8 @@ class gamescene2(tengscene.tengscene):
         return u"食堂外"
 
     def get_box_msg(self):
-        return u"哈哈哈哈哈哈"
+        yield u"哈哈哈哈哈哈"
+        yield ''
 
 if '__main__' == __name__:
     screen = pygame.display.set_mode((640, 480), 0, 32)

@@ -86,7 +86,7 @@ class tengscene:
         pygame.draw.rect(self.screen, self.blue, (0 , 2./3 * self.screen.get_height(), self.screen.get_width(), self.screen.get_height()))
         pygame.draw.rect(self.screen, self.white, (0 , 2./3 * self.screen.get_height(), self.screen.get_width()-2, self.screen.get_height()-2), 2)
         if self.msg_surface is None:
-            self. msg_surface = self.get_font().render(self.msg, True, (255, 255, 255))
+            self.msg_surface = self.get_font().render(self.msg, True, (255, 255, 255))
         
         self.screen.blit(self.msg_surface, (5, 2./3 * self.screen.get_height() + 5))
 

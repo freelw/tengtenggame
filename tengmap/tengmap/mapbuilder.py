@@ -145,6 +145,7 @@ if '__main__' == __name__:
     
     basex = img.get_width() + width
     basey = 0
+    font = pygame.font.SysFont("microsoftyahei", 16)
     while True:
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -231,5 +232,9 @@ if '__main__' == __name__:
         pygame.draw.rect(screen, blue if bleft else green, (basex + (indmx - delta_mx)*width, basey + (indmy - delta_my) * height, width, height), 2)
         screen.blit(img, (0, 0), (delta_x * width, delta_y * height, img.get_width(), img.get_height()))
         pygame.draw.rect(screen, blue if not bleft else green, ((indx - delta_x)*width, (indy - delta_y) * height, width, height), 2)
+        
+        xymsg = str(indmx) + ', ' + str(indmy)
+        xysurface = font.render(xymsg, True, (255, 255, 255))
+        screen.blit(xysurface, (936, 0))
         pygame.display.update()
         clock.tick(30)#fps 120

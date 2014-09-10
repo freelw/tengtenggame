@@ -35,7 +35,6 @@ class gamescene5(tengscene.tengscene):
         return u"寝室二楼"
     
     def shallchat1(self):
-        print self.hero.x, self.hero.y
         return self.hero.x >= 320 and self.hero.x <=350 and self.hero.y <= 256 and self.hero.y >= 220   
         
     def get_box_msg(self):
@@ -44,6 +43,7 @@ class gamescene5(tengscene.tengscene):
             yield u'这里是LW世界的第一关，我是第一个线索！'
             yield u'找到祭坛以通关！'
             yield u'出发吧少年！'
+            self.g_st['begin'] = True
             yield ''
         yield u"DDDDDDota!!!!!"
         yield ''

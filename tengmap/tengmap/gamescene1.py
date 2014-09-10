@@ -31,7 +31,14 @@ class gamescene1(tengscene.tengscene):
     def get_title(self):
         return u"祭坛"
         
+    def shallchat1(self):
+        return self.hero.x >= 9*32 and self.hero.x <=10*32 and self.hero.y <= 4*32 and self.hero.y >= 3*32-10
+
     def get_box_msg(self):
+        if self.shallchat1() and self.g_st.get('begin', None) is not None:
+            yield u'我找到祭坛啦！！！'
+            yield u'恭喜你过关啦！'
+            yield ''
         yield u"这里就是传说中的祭坛吗。。。？"
         yield ''
 

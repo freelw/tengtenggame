@@ -17,10 +17,11 @@ class tengException(Exception):
         self.msg = log
 
 class tengscene:
-    def __init__(self, screen, mapdir, herodir):
+    def __init__(self, screen, mapdir, herodir, g_st = None):
         self.screen = screen
         self.mapdir = mapdir
         self.herodir = herodir
+        self.g_st = g_st
         self.over = False
         self.tmap = tengmap.tengmap(self.mapdir)
         self.tcm = tengcamera.tengCamera(0, 0)

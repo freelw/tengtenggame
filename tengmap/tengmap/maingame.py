@@ -15,11 +15,12 @@ from sys import exit
 if '__main__' == __name__:
     screen = pygame.display.set_mode((640, 480), 0, 32)
     
-    scene2 = gamescene2.gamescene2(screen, './maps/scene2', './pic/153.png')
-    scene1 = gamescene1.gamescene1(screen, './maps/scene1', './pic/153.png')
-    scene3 = gamescene3.gamescene3(screen, './maps/scene3', './pic/153.png')
-    scene4 = gamescene4.gamescene4(screen, './maps/scene4', './pic/153.png')
-    scene5 = gamescene5.gamescene5(screen, './maps/scene5', './pic/153.png')
+    g_st = {}
+    scene2 = gamescene2.gamescene2(screen, './maps/scene2', './pic/153.png', g_st)
+    scene1 = gamescene1.gamescene1(screen, './maps/scene1', './pic/153.png', g_st)
+    scene3 = gamescene3.gamescene3(screen, './maps/scene3', './pic/153.png', g_st)
+    scene4 = gamescene4.gamescene4(screen, './maps/scene4', './pic/153.png', g_st)
+    scene5 = gamescene5.gamescene5(screen, './maps/scene5', './pic/153.png', g_st)
     
     scenedic = {'jitan':scene1,
             'shitang':scene2,
@@ -27,7 +28,7 @@ if '__main__' == __name__:
             'shitangli':scene4,
             'qinshierlou':scene5
     }
-    nextscene = scene3
+    nextscene = scene2
     while True:
         nextscene.setbegin()
         scenename = nextscene.display()

@@ -58,7 +58,7 @@ class tengCamera:
             self.hero.event_callback(event)
     def run(self):
         if self.hero is not None:
-            self.hero.run()
+            return self.hero.run()
 
         
 if '__main__' == __name__:

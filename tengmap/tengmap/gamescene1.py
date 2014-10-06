@@ -4,6 +4,8 @@ import pygame
 from pygame.locals import *
 pygame.init()
 import tengscene
+import simplefight
+import random
 
 class gamescene1(tengscene.tengscene):
 
@@ -20,6 +22,7 @@ class gamescene1(tengscene.tengscene):
         self.tcm.x = 0
         self.tcm.y = 1248+32-self.screen.get_height()
         self.nextscene = None
+        self.fight = simplefight.simplefight(self.screen)
     
     def on_idle(self):
         if self.hero.y == 1248:
@@ -30,6 +33,11 @@ class gamescene1(tengscene.tengscene):
             self.setover()
     def get_title(self):
         return u"祭坛"
+
+    def random_fight(self):
+        if random.random() < 0.1:
+            self.fight.display()
+            
         
     def shallchat1(self):
         return self.hero.x >= 9*32 and self.hero.x <=10*32 and self.hero.y <= 4*32 and self.hero.y >= 3*32-10

@@ -104,7 +104,7 @@ class tengscene:
                     
                 self.check_K_RETURN(event)
                 
-            self.tcm.run()
+            bMoving = self.tcm.run()
             self.tcm.fixbyhero()
             pygame.draw.rect(self.screen, self.black, (0, 0, self.screen.get_width(), self.screen.get_height()))
             self.tcm.display(self.screen)
@@ -113,6 +113,8 @@ class tengscene:
                 self.show_msg()
             pygame.display.update()
             self.clock.tick(50)
+            if bMoving:
+                self.random_fight()
             self.on_idle()
 
     def setover(self):
@@ -125,3 +127,6 @@ class tengscene:
         lx = x1 - x0
         ly = y1 - y0
         return math.sqrt(lx**2+ly**2)
+    
+    def random_fight(self):
+        pass

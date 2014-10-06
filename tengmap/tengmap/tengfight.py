@@ -31,6 +31,9 @@ class soldier:
             self.height = height
         self.font = None
 
+    def get_blood(self):
+        self.currentlife = self.maxlife
+
     def get_font(self):
         if self.font is None:
             self.font = pygame.font.Font("./fonts/wryh.ttf", 16)
@@ -52,19 +55,31 @@ class tengfight:
         self.black = pygame.Color(0, 0, 0, 0)
         self.under_control = True
         self.fighting = self.fight()
+        self.is_over = False
 
     def display(self):
+        self.is_over = False
+        self.hero.get_blood()
+        self.monster.get_blood()
         while True:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     exit()
                 self.event_callback(event)
+            self.check_win()
             self.display_bg()
             hero = self.get_hero()
             hero.display(self.surface)
             monster = self.get_monster()
             monster.display(self.surface)
             pygame.display.update()
+            if self.is_over:
+                break
+
+    def check_win(self):
+        if self.monster.currentlife <= 0:
+            self.draw_msg('you win')
+            self.is_over = True
 
     def get_hero(self):
         raise tengException('not impl')
@@ -87,7 +102,11 @@ class tengfight:
             if event.type == KEYDOWN:
                 if K_RETURN == event.key:
                     msg = self.fighting.next()
-                    print msg
+                    self.draw_msg(msg)
+
+    def draw_msg(self, msg):
+        print msg
+
     def hit_monster(self):
         return self.hero.hit(self.monster)
     def monster_hit(self):

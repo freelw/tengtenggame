@@ -37,7 +37,8 @@ class gamescene1(tengscene.tengscene):
     def random_fight(self):
         if random.random() < 0.01:
             self.fight.display()
-            
+            return True
+        return False
         
     def shallchat1(self):
         return self.hero.x >= 9*32 and self.hero.x <=10*32 and self.hero.y <= 4*32 and self.hero.y >= 3*32-10

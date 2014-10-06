@@ -114,7 +114,8 @@ class tengscene:
             pygame.display.update()
             self.clock.tick(50)
             if bMoving:
-                self.random_fight()
+                if self.random_fight():
+                    self.hero.speed = 0
             self.on_idle()
 
     def setover(self):
@@ -129,4 +130,4 @@ class tengscene:
         return math.sqrt(lx**2+ly**2)
     
     def random_fight(self):
-        pass
+        return False

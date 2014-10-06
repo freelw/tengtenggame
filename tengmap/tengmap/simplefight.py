@@ -18,5 +18,3 @@ class simplefight(tengfight):
         return self.heros
     def get_monsters(self):
         return self.monsters
-    def get_bg(self):
-        pass

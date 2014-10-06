@@ -31,12 +31,14 @@ class soldier:
 class tengfight:
     def __init__(self, surface):
         self.surface = surface
+        self.black = pygame.Color(0, 0, 0, 0)
 
     def display(self):
         while True:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     exit()
+            self.display_bg()
             for hero in self.get_heros():
                 hero.display(self.surface)
             for monster in self.get_monsters():
@@ -47,8 +49,11 @@ class tengfight:
         raise tengException('not impl')
     def get_monsters(self):
         raise tengException('not impl')
-    def get_bg(self):
-        raise tengException('not impl')
+    def display_bg(self):
+        swidth = self.surface.get_width()
+        sheight = self.surface.get_height()
+        pygame.draw.rect(self.surface, self.black, (0, 0, swidth, sheight))
+        
 
 class testfight(tengfight):
     def __init__(self, surface):

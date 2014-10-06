@@ -65,6 +65,7 @@ class tengfight:
         self.monster.get_blood()
         self.init_black()
         clock = pygame.time.Clock()
+        self.draw_msg('fight!')
         while True:
             clock.tick(50)
             self.display_bg()

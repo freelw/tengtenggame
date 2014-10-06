@@ -35,7 +35,7 @@ class gamescene1(tengscene.tengscene):
         return u"祭坛"
 
     def random_fight(self):
-        if random.random() < 0.1:
+        if random.random() < 0.01:
             self.fight.display()
             
         

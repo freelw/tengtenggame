@@ -73,7 +73,7 @@ class tengHero:
                 self.change_state_y = self.y
                 self.state += 1
                 self.state %= 4
-        return 0 == self.speed
+        return 0 != self.speed
 
     def run_and_blit(self, surface, delta_x = 0, delta_y = 0):
         self.run()

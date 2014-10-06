@@ -9,16 +9,24 @@ from tengException import tengException
 
 
 class soldier:
-    def __init__(self, dir, x, y):
+    def __init__(self, dir, x, y, dx = 0, dy = 0, width = None, height = None):
         self.dir = dir
         self.img = pygame.image.load(self.dir).convert_alpha()
         self.x = x
         self.y = y
-        self.width = self.img.get_width()
-        self.height = self.img.get_height()
+        self.dx = dx
+        self.dy = dy
+        if width is None:
+            self.width = self.img.get_width()
+        else:
+            self.width = width
+        if height is None:
+            self.height = self.img.get_height()
+        else:
+            self.height = height
 
     def display(self, surface):
-        surface.blit(self.img, (self.x, self.y), (0, 0, self.width, self.height))
+        surface.blit(self.img, (self.x, self.y), (self.dx, self.dy, self.width, self.height))
 
 class tengfight:
     def __init__(self, surface):
@@ -47,8 +55,10 @@ class testfight(tengfight):
         tengfight.__init__(self, surface)
         self.heros = []
         self.monsters = []
-        hero1 = soldier('./pic/12.png', 0, 0)
+        hero1 = soldier('./pic/153.png', 90, 200, 0, 64, 32, 32)
+        monster1 = soldier('./pic/12.png', 300, 80)
         self.heros.append(hero1)
+        self.monsters.append(monster1)
 
     def get_heros(self):
         return self.heros

@@ -6,6 +6,7 @@ from pygame.locals import *
 pygame.init()
 from tengException import tengException
 import fontMgr
+import time
 
 
 
@@ -70,12 +71,13 @@ class tengfight:
                 if event.type == QUIT:
                     exit()
                 self.event_callback(event)
-            self.check_win()
             hero = self.get_hero()
             hero.display(self.surface)
             monster = self.get_monster()
             monster.display(self.surface)
             pygame.display.update()
+            time.sleep(0.5)
+            self.check_win()
             if self.is_over:
                 break
     def init_black(self):
@@ -86,7 +88,9 @@ class tengfight:
     def check_win(self):
         if self.monster.currentlife <= 0:
             self.draw_msg('you win')
+            pygame.display.update()
             self.is_over = True
+            time.sleep(2)
 
     def get_hero(self):
         raise tengException('not impl')
@@ -145,7 +149,6 @@ if '__main__' == __name__:
     screen = pygame.display.set_mode((640, 480), 0, 32)
     black = pygame.Color(0, 0, 0, 0)
     clock = pygame.time.Clock()
-
 
     fight = testfight(screen)
     while True:

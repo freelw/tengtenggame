@@ -11,6 +11,7 @@ pygame.init()
 from sys import exit
 import math
 from tengException import tengException
+import fontMgr
 
 class tengscene:
     def __init__(self, screen, mapdir, herodir, g_st = None):
@@ -35,6 +36,7 @@ class tengscene:
         self.msglock = False
         self.msg = None
         self.msg_surface = None
+        self.fontMgr = fontMgr.fontMgr()
         
         self.prepair()
         
@@ -55,9 +57,7 @@ class tengscene:
         return 'title'
         
     def get_font(self):
-        if self.font is None:
-            self.font = pygame.font.Font("./fonts/wryh.ttf", 16)
-        return self.font
+        return self.fontMgr.get_font()
 
     def get_title_surface(self):
         if self.title_surface is None:

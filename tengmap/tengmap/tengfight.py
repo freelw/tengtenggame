@@ -5,6 +5,7 @@ import pygame
 from pygame.locals import *
 pygame.init()
 from tengException import tengException
+import fontMgr
 
 
 
@@ -29,15 +30,13 @@ class soldier:
             self.height = self.img.get_height()
         else:
             self.height = height
-        self.font = None
+        self.fontMgr = fontMgr.fontMgr()
 
     def get_blood(self):
         self.currentlife = self.maxlife
 
     def get_font(self):
-        if self.font is None:
-            self.font = pygame.font.Font("./fonts/wryh.ttf", 16)
-        return self.font
+        return self.fontMgr.get_font()
 
     def display(self, surface):
         detail = '%s/%s' % (self.maxlife, self.currentlife)
@@ -53,21 +52,24 @@ class tengfight:
     def __init__(self, surface):
         self.surface = surface
         self.black = pygame.Color(0, 0, 0, 0)
+        self.blue = pygame.Color(0, 0, 255)
+        self.white = pygame.Color(255, 255, 255)
         self.under_control = True
         self.fighting = self.fight()
         self.is_over = False
+        self.fontMgr = fontMgr.fontMgr()
 
     def display(self):
         self.is_over = False
         self.hero.get_blood()
         self.monster.get_blood()
         while True:
+            self.display_bg()
             for event in pygame.event.get():
                 if event.type == QUIT:
                     exit()
                 self.event_callback(event)
             self.check_win()
-            self.display_bg()
             hero = self.get_hero()
             hero.display(self.surface)
             monster = self.get_monster()
@@ -105,12 +107,17 @@ class tengfight:
                     self.draw_msg(msg)
 
     def draw_msg(self, msg):
-        print msg
+        pygame.draw.rect(self.surface, self.blue, (0 , 2./3 * self.surface.get_height(), self.surface.get_width(), self.surface.get_height()))
+        pygame.draw.rect(self.surface, self.white, (0 , 2./3 * self.surface.get_height(), self.surface.get_width()-2, self.surface.get_height()-2), 2)
+        msg_surface = self.get_font().render(msg, True, (255, 255, 255))
+        self.surface.blit(msg_surface, (5, 2./3 * self.surface.get_height() + 5))
 
     def hit_monster(self):
         return self.hero.hit(self.monster)
     def monster_hit(self):
         return self.monster.hit(self.hero)
+    def get_font(self):
+        return self.fontMgr.get_font()
         
 class testfight(tengfight):
     def __init__(self, surface):

@@ -10,11 +10,7 @@ from pygame.locals import *
 pygame.init()
 from sys import exit
 import math
-
-class tengException(Exception):
-    def __self(self, log):
-        Exception.__init__(self)
-        self.msg = log
+from tengException import tengException
 
 class tengscene:
     def __init__(self, screen, mapdir, herodir, g_st = None):

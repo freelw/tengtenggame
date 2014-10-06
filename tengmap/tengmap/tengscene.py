@@ -60,7 +60,7 @@ class tengscene:
         
     def get_font(self):
         if self.font is None:
-            self.font = pygame.font.SysFont("microsoftyahei", 16)
+            self.font = pygame.font.Font("./fonts/wryh.ttf", 16)
         return self.font
 
     def get_title_surface(self):

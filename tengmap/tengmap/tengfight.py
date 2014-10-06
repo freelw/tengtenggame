@@ -9,13 +9,18 @@ from tengException import tengException
 
 
 class soldier:
-    def __init__(self, dir, x, y, dx = 0, dy = 0, width = None, height = None):
+    def __init__(self, dir, name, x, y, life, attack, defense, dx = 0, dy = 0, width = None, height = None):
         self.dir = dir
+        self.name = name
         self.img = pygame.image.load(self.dir).convert_alpha()
         self.x = x
         self.y = y
         self.dx = dx
         self.dy = dy
+        self.maxlife = life
+        self.currentlife = life
+        self.attack = attack
+        self.defense = defense
         if width is None:
             self.width = self.img.get_width()
         else:
@@ -24,37 +29,70 @@ class soldier:
             self.height = self.img.get_height()
         else:
             self.height = height
+        self.font = None
+
+    def get_font(self):
+        if self.font is None:
+            self.font = pygame.font.Font("./fonts/wryh.ttf", 16)
+        return self.font
 
     def display(self, surface):
+        detail = '%s/%s' % (self.maxlife, self.currentlife)
+        msg_surface = self.get_font().render(detail, True, (255, 255, 255))
+        surface.blit(msg_surface, (self.x + self.width/2, self.y - 20))
         surface.blit(self.img, (self.x, self.y), (self.dx, self.dy, self.width, self.height))
 
+    def hit(self, enemy):
+        enemy.currentlife -= max(self.attack-enemy.defense, 0)
+        msg = u'%s attack %s %s hurt %s' % (self.name, enemy.name, enemy.name, max(self.attack-enemy.defense, 0))
+        return msg
 class tengfight:
     def __init__(self, surface):
         self.surface = surface
         self.black = pygame.Color(0, 0, 0, 0)
+        self.under_control = True
+        self.fighting = self.fight()
 
     def display(self):
         while True:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     exit()
+                self.event_callback(event)
             self.display_bg()
-            for hero in self.get_heros():
-                hero.display(self.surface)
-            for monster in self.get_monsters():
-                monster.display(self.surface)
+            hero = self.get_hero()
+            hero.display(self.surface)
+            monster = self.get_monster()
+            monster.display(self.surface)
             pygame.display.update()
 
-    def get_heros(self):
+    def get_hero(self):
         raise tengException('not impl')
-    def get_monsters(self):
+    def get_monster(self):
         raise tengException('not impl')
     def display_bg(self):
         swidth = self.surface.get_width()
         sheight = self.surface.get_height()
         pygame.draw.rect(self.surface, self.black, (0, 0, swidth, sheight))
-        
 
+    def fight(self):
+        while True:
+            yield 'your turn'
+            yield self.hit_monster()
+            yield 'enemy turn'
+            yield self.monster_hit()
+            
+    def event_callback(self, event):
+        if self.under_control:
+            if event.type == KEYDOWN:
+                if K_RETURN == event.key:
+                    msg = self.fighting.next()
+                    print msg
+    def hit_monster(self):
+        return self.hero.hit(self.monster)
+    def monster_hit(self):
+        return self.monster.hit(self.hero)
+        
 class testfight(tengfight):
     def __init__(self, surface):
         tengfight.__init__(self, surface)

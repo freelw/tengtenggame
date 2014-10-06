@@ -55,7 +55,6 @@ class tengfight:
         self.black = pygame.Color(0, 0, 0, 0)
         self.blue = pygame.Color(0, 0, 255)
         self.white = pygame.Color(255, 255, 255)
-        self.under_control = True
         self.fighting = self.fight()
         self.is_over = False
         self.fontMgr = fontMgr.fontMgr()
@@ -65,7 +64,9 @@ class tengfight:
         self.hero.get_blood()
         self.monster.get_blood()
         self.init_black()
+        clock = pygame.time.Clock()
         while True:
+            clock.tick(50)
             self.display_bg()
             for event in pygame.event.get():
                 if event.type == QUIT:
@@ -76,10 +77,14 @@ class tengfight:
             monster = self.get_monster()
             monster.display(self.surface)
             pygame.display.update()
-            time.sleep(0.5)
             self.check_win()
             if self.is_over:
+                time.sleep(2)
+                self.draw_msg('you win')
+                pygame.display.update()
+                time.sleep(2)
                 break
+            
     def init_black(self):
         swidth = self.surface.get_width()
         sheight = self.surface.get_height()
@@ -87,10 +92,7 @@ class tengfight:
 
     def check_win(self):
         if self.monster.currentlife <= 0:
-            self.draw_msg('you win')
-            pygame.display.update()
             self.is_over = True
-            time.sleep(2)
 
     def get_hero(self):
         raise tengException('not impl')
@@ -109,11 +111,10 @@ class tengfight:
             yield self.monster_hit()
             
     def event_callback(self, event):
-        if self.under_control:
-            if event.type == KEYDOWN:
-                if K_RETURN == event.key:
-                    msg = self.fighting.next()
-                    self.draw_msg(msg)
+        if event.type == KEYDOWN:
+            if K_RETURN == event.key:
+                msg = self.fighting.next()
+                self.draw_msg(msg)
 
     def draw_msg(self, msg):
         pygame.draw.rect(self.surface, self.blue, (0 , 2./3 * self.surface.get_height(), self.surface.get_width(), self.surface.get_height()))

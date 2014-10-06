@@ -63,6 +63,7 @@ class tengfight:
         self.is_over = False
         self.hero.get_blood()
         self.monster.get_blood()
+        self.init_black()
         while True:
             self.display_bg()
             for event in pygame.event.get():
@@ -77,6 +78,10 @@ class tengfight:
             pygame.display.update()
             if self.is_over:
                 break
+    def init_black(self):
+        swidth = self.surface.get_width()
+        sheight = self.surface.get_height()
+        pygame.draw.rect(self.surface, self.black, (0, 0, swidth, sheight))
 
     def check_win(self):
         if self.monster.currentlife <= 0:
@@ -90,7 +95,7 @@ class tengfight:
     def display_bg(self):
         swidth = self.surface.get_width()
         sheight = self.surface.get_height()
-        pygame.draw.rect(self.surface, self.black, (0, 0, swidth, sheight))
+        pygame.draw.rect(self.surface, self.black, (0, 0, swidth, sheight * 2/3))
 
     def fight(self):
         while True:
